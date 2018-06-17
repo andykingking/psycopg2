@@ -124,6 +124,10 @@ exception_from_sqlstate(const char *sqlstate)
         PyErr_Clear();
     }
 
+    /*
+     * IMPORTANT: if you change anything in this function you should change
+     * make_errors.py accordingly.
+     */
     switch (sqlstate[0]) {
     case '0':
         switch (sqlstate[1]) {

@@ -323,6 +323,26 @@ class Identifier(Composable):
         return ext.quote_ident(self._wrapped, context)
 
 
+class Qualified(Composable):
+    """
+    A `Composable` representing a dot-separated sequence of qualified identifiers.
+
+    Useful to represent schema-qualified names of tables or table-qualified
+    field names.
+
+    """
+    def __init__(self, *parts):
+        if not parts:
+            raise ValueError("Qualified names must contain some part")
+
+        super(Qualified, self).__init__(parts)
+        self._ids = [Identifier(part) for part in parts]
+
+    def as_string(self, context):
+        rv = [i.as_string(context) for i in self._ids]
+        return '.'.join(rv)
+
+
 class Literal(Composable):
     """
     A `Composable` representing an SQL value to include in a query.
